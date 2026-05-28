@@ -1,26 +1,61 @@
 extends Node
 
-@onready var primary_console = $HBoxContainer/PrimaryConsole
+@onready var cat = %cat
+@onready var mainSpawn = %mainSpawn
+@onready var buildings = %buildings
+@onready var terrain = %terrain
+@onready var slope = %slope
+@onready var crouch = %crouch
+@onready var platforms = %platforms
+@onready var player = %player
 
 func _ready() -> void:
-	primary_console.register_command("cheat", cheat, false)
-	primary_console.register_command("test", test)
+	cat.register_command("ping", ping, false)
+	cat.register_command("chspawn", chspawn)
+	cat.register_command("kill", kill)
 	print_init_messages()
 
 func print_init_messages():
-	primary_console.print_message(primary_console.col(Color.GREEN, "Hi!"))
-	primary_console.print_message(primary_console.bold(primary_console.col("#984447", "This is bold and red dummy text")))
-	primary_console.print_message(primary_console.italic(primary_console.crossed("This is italic and crossed dummy text")))
-	primary_console.print_message(primary_console.col(Color.BLUE_VIOLET, primary_console.underline("It is already " + primary_console.timestamp() + "! A late time!")))
+	cat.print_message(cat.col(Color.GREEN, "Oi!"))
 
-	primary_console._on_text_input_line_text_submitted("/help")
-	primary_console.print_message(primary_console.col(Color.AQUA, "Try out some of the commands above, you can also use the buttons to interact."))
-	primary_console.print_message(primary_console.col(Color.AQUA, "Each console window has it's seperately defined history and registered commands. This means `/help` will differ between consoles."))
-	primary_console.print_message(primary_console.col(Color.AQUA, "To try the `/test` command which is only available in this console you will first need to use the button on the left `PrimaryToggleCLI` which will show/hide the command input."))
+func ping() -> void:
+	cat.print_message("Pong!")
 
-func cheat() -> void:
-	primary_console.print_message("The cheating command was called!")
+func kill(args: Array) -> void:
+	cat.print_message("Entity killed")
+	match args[0]:
+		"@p":
+			player.kill("Killed by command")
+		_:
+			cat.print_message("Invalid target, nothing was killed")
 
-func test(args: Array) -> void:
-	primary_console.print_message("The test command was called with these arguments: " + " ".join(PackedStringArray(args)))
-
+func chspawn(args: Array) -> void:
+	match args[0]:
+		"mainSpawn": 
+			cat.print_message("teleporting to: " + args[0])
+			player.position = mainSpawn.position
+		"buildings": 
+			cat.print_message("teleporting to: " + args[0])
+			player.position = buildings.position
+		"terrain": 
+			cat.print_message("teleporting to: " + args[0])
+			player.position = terrain.position
+		"slope": 
+			cat.print_message("teleporting to: " + args[0])
+			player.position = slope.position
+		"crouch": 
+			cat.print_message("teleporting to: " + args[0])
+			player.position = crouch.position
+		"platforms": 
+			cat.print_message("teleporting to: " + args[0])
+			player.position = platforms.position
+		"help":
+			cat.print_message("Available spawn points: ")
+			cat.print_message("    1) " + "mainSpawn")
+			cat.print_message("    2) " + "buildings")  
+			cat.print_message("    3) " + "terrain")
+			cat.print_message("    4) " + "slope")   
+			cat.print_message("    5) " + "crouch")   
+			cat.print_message("    6) " + "platforms")   
+		_:
+			cat.print_message("invalid argument")

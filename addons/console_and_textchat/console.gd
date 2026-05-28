@@ -16,7 +16,7 @@ enum text_input_line_modes {
 @onready var text_input_line_mode: int = text_input_line_modes.DEFAULT:
 	set(new_mode):
 		
-		print(new_mode, text_input_line_mode)
+		print("cat debug:",new_mode, text_input_line_mode)
 		if new_mode == text_input_line_mode:
 			return
 		text_input_line_mode = new_mode
@@ -40,7 +40,7 @@ enum text_input_line_modes {
 @export var override_theme_colors: bool = true
 @export var history_preview_color: Color = Color.SALMON
 @export var disable_text_input_line: bool = false
-@export var disable_key_enter_focus: bool = false
+@export var disable_key_enter_focus: bool = true
 
 
 ####################################################################################################
@@ -48,6 +48,7 @@ enum text_input_line_modes {
 
 
 func _ready():
+	self.visible = false
 	_build_console()
 	set("minimum_size", size)
 	_register_premade_commands()
@@ -92,9 +93,8 @@ func _instance_and_setup_text_input(parent: VBoxContainer) -> void:
 	var edit: LineEdit = LineEdit.new()
 	edit.name = "TextInputLine"
 	edit.custom_minimum_size = Vector2(300, 35)
-	edit.placeholder_text = "Insert message or command"
+	edit.placeholder_text = "chat or execute command"
 	edit.text_submitted.connect(_on_text_input_line_text_submitted.bind())
-
 	parent.add_child(edit)
 	text_input_line = edit
 
@@ -126,18 +126,34 @@ func clear_console() -> void:
 func _input(event: InputEvent) -> void:
 	#toggle console visibility
 	if event is InputEventKey and !text_input_line.has_focus():
-		if event.pressed == true and event.physical_keycode == KEY_K:
+		if event.is_action_pressed("openChat"):
+			print("debug: testChat")
 			_toggle_console_visibility()
+			text_input_line.grab_focus()
+			text_input_line.text = ""
+
+		if event.is_action_pressed("openCmd"):
+			print("debug: testCmd")
+			_toggle_console_visibility()
+			text_input_line.grab_focus()
+
+	# close the chat with escape
+	if text_input_line.has_focus():
+		if event is InputEventKey and event.pressed :
+			if event.physical_keycode == KEY_ESCAPE:
+				print("debug: closed")
+				_toggle_console_visibility()
+				text_input_line.grab_focus()
 
 	#grab focus of text input line
 	if event is InputEventKey:
-		if event.pressed == true and not disable_key_enter_focus and event.physical_keycode == KEY_ENTER \
-		and self.visible and !text_input_line.has_focus():
+		if event.pressed == true and not disable_key_enter_focus and self.visible and !text_input_line.has_focus():
 			text_input_line.grab_focus()
+			# if event.physical_keycode == KEY_ENTER or event.physical_keycode == KEY_SLASH:
 
 	# navigate command history with Shift + Arrow keys
 	if event is InputEventKey and text_input_line.has_focus():
-		if event.shift_pressed and event.pressed:
+		if event.pressed:
 			if event.physical_keycode == KEY_UP:
 				_show_previous_command()
 			elif event.physical_keycode == KEY_DOWN:
@@ -381,4 +397,3 @@ func _handle_text_input_line_visibility() -> void:
 		text_input_line.hide()
 	else:
 		text_input_line.show()
-

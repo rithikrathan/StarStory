@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://djwkec4vmtoru"]
+
+[ext_resource type="Script" uid="uid://dfa5sgb8ofbhq" path="res://scripts/player.gd" id="1_dqkch"]
+[ext_resource type="Texture2D" uid="uid://1jbe83h7qjng" path="res://assets/prototype/textures/prototypingTextures/Red/texture_09.png" id="2_qlg0r"]
+[ext_resource type="Texture2D" uid="uid://djrppo7c6xhao" path="res://assets/prototype/textures/prototypingTextures/Dark/texture_04.png" id="3_tuyoq"]
+[ext_resource type="Script" uid="uid://hfo4p52imx6k" path="res://scripts/camera_controller.gd" id="4_fjrip"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_smehm"]
+radius = 0.42
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ur7pv"]
+albedo_texture = ExtResource("2_qlg0r")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_y4r1p"]
+radius = 0.42
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d2wvv"]
+albedo_texture = ExtResource("3_tuyoq")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_3v2ag"]
+
+[node name="player" type="CharacterBody3D" unique_id=1563947440 groups=["player"]]
+script = ExtResource("1_dqkch")
+
+[node name="collider" type="CollisionShape3D" parent="." unique_id=706183809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9991587, 0)
+shape = SubResource("CapsuleShape3D_smehm")
+
+[node name="viewModel" type="Node3D" parent="." unique_id=4567479]
+
+[node name="redBoi" type="MeshInstance3D" parent="viewModel" unique_id=572365100]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9999176, 0)
+material_override = SubResource("StandardMaterial3D_ur7pv")
+mesh = SubResource("CapsuleMesh_y4r1p")
+
+[node name="glasses" type="MeshInstance3D" parent="viewModel" unique_id=572404613]
+transform = Transform3D(0.64114326, 0, 0, 0, 0.19311573, 0, 0, 0, 0.21586563, 0.004, 1.514, -0.351)
+material_override = SubResource("StandardMaterial3D_d2wvv")
+mesh = SubResource("BoxMesh_3v2ag")
+
+[node name="camerAnchor" type="Node3D" parent="." unique_id=1627875383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5698472, 0)
+
+[node name="cameraController" type="Node3D" parent="camerAnchor" unique_id=1208740902]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.006652236, 0)
+script = ExtResource("4_fjrip")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="camerAnchor/cameraController" unique_id=110539979]
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="camerAnchor/cameraController/SpringArm3D" unique_id=326624557]
