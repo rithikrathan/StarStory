@@ -10,7 +10,10 @@ func _ready() -> void:
 	pass 
 
 func _process(_delta: float) -> void:
-	pass
+	if cat.visible:
+		player.disabled = true
+	else:
+		player.disabled = false
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
