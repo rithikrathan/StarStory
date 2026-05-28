@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bwashsr2e8655"]
+
+[ext_resource type="Script" uid="uid://bu1eb6owlu6ci" path="res://scripts/chatBox.gd" id="1_lf76f"]
+[ext_resource type="Script" uid="uid://c1q2o4yn62mos" path="res://addons/console_and_textchat/console.gd" id="2_t4cx1"]
+
+[sub_resource type="Theme" id="Theme_860e0"]
+
+[node name="chatBox" type="Node" unique_id=1089845837]
+script = ExtResource("1_lf76f")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1653602379]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -360.0
+offset_right = -450.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PrimaryConsole" type="Panel" parent="HBoxContainer" unique_id=795958047]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_860e0")
+script = ExtResource("2_t4cx1")
+minimum_size = Vector2(702, 360)
+text_input_line_default_theme = SubResource("Theme_860e0")
+history_preview_color = Color(0.991436, 0.471547, 0.586184, 1)
+disable_key_enter_focus = true
