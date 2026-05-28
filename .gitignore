@@ -1,3 +1,17 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+/ios/
+
+# Godot auto-generated files
+*.import
+*.uid
+
+# Editor & OS files
+godothost
+screenshots/
+*.translation
+*.kra
+*.psd
+*.blend
+*.blend1
