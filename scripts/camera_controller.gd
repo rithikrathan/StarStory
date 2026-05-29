@@ -11,8 +11,8 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		player.rotate_y(-event.relative.x * mouse_sensitivity)
-		rotate_x(-event.relative.y * mouse_sensitivity)
+		rotation.y -= event.relative.x * mouse_sensitivity
+		rotation.x -= event.relative.y * mouse_sensitivity
 		rotation.x = clamp(rotation.x, deg_to_rad(-vertical_limit), deg_to_rad(vertical_limit))
 	if player.disabled:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

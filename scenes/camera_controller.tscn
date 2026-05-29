@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://d04m0a0f8xsom"]
+
+[ext_resource type="Script" uid="uid://hfo4p52imx6k" path="res://scripts/camera_controller.gd" id="1_nsieu"]
+
+[node name="cameraController" type="Node3D" unique_id=2130389083]
+script = ExtResource("1_nsieu")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=2104415834]
+spring_length = 4.0
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1991305910]
