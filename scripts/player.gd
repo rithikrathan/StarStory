@@ -11,12 +11,18 @@ func kill(message:String):
 	print("Reason for Death: " + message)
 	self.position = spawnPosition
 
+func _input(_event: InputEvent) -> void:
+	pass
+
 func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += gravity * delta
+
+	if Input.is_action_just_pressed("esc"):
+		disabled = !disabled
 
 	if !disabled:
 		if Input.is_action_just_pressed("jump") and is_on_floor():

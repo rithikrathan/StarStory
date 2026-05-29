@@ -170,6 +170,7 @@ func _on_text_input_line_text_submitted(new_text: String) -> void:
 		print_message(new_text)
 
 	_clear_text_input_line_text()
+	text_input_line.grab_focus()
 
 
 ####################################################################################################
@@ -275,7 +276,7 @@ func _proceed_command(text: String) -> void:
 
 func _register_premade_commands() -> void:
 	register_command("help", _help_command, false)
-	register_command("toggle_console", _toggle_console_visibility, false)
+	# register_command("toggle_console", _toggle_console_visibility, false)
 	register_command("clear", clear_console, false)
 
 
