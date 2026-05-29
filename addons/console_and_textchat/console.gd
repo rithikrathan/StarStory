@@ -145,11 +145,15 @@ func _input(event: InputEvent) -> void:
 			_toggle_console_visibility()
 			text_input_line.grab_focus()
 			text_input_line.text = ""
+			get_viewport().set_input_as_handled()
+			return
 
 		if event.is_action_pressed("openCmd"):
 			print("debug: testCmd")
 			_toggle_console_visibility()
 			text_input_line.grab_focus()
+			# get_viewport().set_input_as_handled()
+			# return
 
 	# close the chat with escape
 	if text_input_line.has_focus():
