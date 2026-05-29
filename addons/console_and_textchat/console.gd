@@ -94,7 +94,6 @@ func _instance_and_setup_text_input(parent: VBoxContainer) -> void:
 	edit.name = "TextInputLine"
 	edit.custom_minimum_size = Vector2(300, 35)
 	edit.placeholder_text = "chat or execute command"
-	edit.text_submitted.connect(_on_text_input_line_text_submitted.bind())
 	parent.add_child(edit)
 	text_input_line = edit
 
@@ -124,6 +123,21 @@ func clear_console() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# handle enter submission ourselves before LineEdit processes it
+	if event is InputEventKey and event.pressed and text_input_line.has_focus() and self.visible:
+		if event.physical_keycode == KEY_ENTER:
+			var text = text_input_line.text
+			if text != "":
+				_save_text_to_history(text)
+				if _input_is_command(text):
+					_proceed_command(text)
+				else:
+					print_message(text)
+			text_input_line.text = ""
+			text_input_line.grab_focus()
+			get_viewport().set_input_as_handled()
+			return
+
 	#toggle console visibility
 	if event is InputEventKey and !text_input_line.has_focus():
 		if event.is_action_pressed("openChat"):
