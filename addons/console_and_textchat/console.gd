@@ -55,7 +55,10 @@ func _ready():
 	_handle_text_input_line_themes()
 	_handle_text_input_line_visibility()
 	resized.connect(_on_text_window_resized)
-
+	text_input_line.caret_blink = true
+	text_input_line.emoji_menu_enabled = true 
+	text_input_line.middle_mouse_paste_enabled = true 
+	text_input_line.caret_blink_interval = 0.25
 
 func _build_console() -> void:
 	_format_panel()
@@ -152,8 +155,10 @@ func _input(event: InputEvent) -> void:
 			print("debug: testCmd")
 			_toggle_console_visibility()
 			text_input_line.grab_focus()
-			# get_viewport().set_input_as_handled()
-			# return
+			get_viewport().set_input_as_handled()
+			text_input_line.text = "/"
+			text_input_line.caret_column = 1
+			return
 
 	# close the chat with escape
 	if text_input_line.has_focus():
