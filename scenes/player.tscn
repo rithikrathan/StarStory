@@ -82,10 +82,12 @@ metadata/_custom_type_script = "uid://2y37yx57ooc4"
 
 [node name="walk" type="Node" parent="movementStateMachine/ground" unique_id=52971301]
 script = ExtResource("8_pf23h")
+id = null
 metadata/_custom_type_script = "uid://2y37yx57ooc4"
 
 [node name="run" type="Node" parent="movementStateMachine/ground" unique_id=857560625]
 script = ExtResource("9_dt7fs")
+id = null
 metadata/_custom_type_script = "uid://2y37yx57ooc4"
 
 [node name="sprint" type="Node" parent="movementStateMachine/ground" unique_id=78020271]

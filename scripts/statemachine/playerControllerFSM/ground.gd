@@ -1,11 +1,20 @@
 extends State
 
+var player: CharacterBody3D
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+func enter() -> void:
+	player = _finite_state_machine.get_parent() as CharacterBody3D
 
+func physics_update(delta: float) -> void:
+	if not player:
+		player = _finite_state_machine.get_parent() as CharacterBody3D
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	var wants = player.wants_sprint
+	player.wants_sprint = false
+	if wants:
+		transition("ground/sprint")
+		return
+
+	if not player.is_on_floor():
+		transition("air/fall")
+		return
