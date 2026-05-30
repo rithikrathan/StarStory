@@ -1,0 +1,30 @@
+// ========================= PHASE 1 =========================
+// Core Foundation — 5 states
+// Idle, Walk, Run, Ascend, Fall
+
+digraph phase1 {
+    rankdir=TB; splines=ortho; nodesep=0.5; ranksep=0.6;
+    node [shape=box, style=rounded, width=1.4, height=0.5, fontname="monospace"];
+    edge [fontname="monospace", fontsize=10];
+
+    subgraph cluster_ground {
+        label="Ground"; style=dashed; color=gray;
+        { rank=same; Idle; Walk; Run; }
+    }
+    subgraph cluster_air {
+        label="Air"; style=dashed; color=gray;
+        Ascend; Fall;
+    }
+
+    Idle  -> Walk  [dir=both, label="input>0 / input=0"];
+    Walk  -> Run   [dir=both, label="sprint / release"];
+    Run   -> Idle  [label="input=0"];
+    Idle  -> Ascend [label="jump"];
+    Walk  -> Ascend [label="jump"];
+    Run   -> Ascend [label="jump"];
+    Ascend -> Fall  [label="vel.y<0"];
+    Fall  -> Idle   [label="land"];
+}
+
+
+

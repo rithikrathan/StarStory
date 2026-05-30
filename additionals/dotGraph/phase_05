@@ -1,0 +1,62 @@
+// ========================= PHASE 3 =========================
+// Momentum & Advanced Physics — +7 states = 18 total
+// Adds: Sprint, Stop_Sprint, Pivot_Run, Pivot_Sprint, Apex, Land_Soft, Land_Heavy
+
+digraph phase3 {
+    rankdir=TB; splines=ortho; nodesep=0.5; ranksep=0.6;
+    node [shape=box, style=rounded, width=1.4, height=0.5, fontname="monospace"];
+    edge [fontname="monospace", fontsize=9];
+
+    subgraph cluster_ground {
+        label="Ground"; style=dashed; color=gray;
+        { rank=same; Idle; Start_Walk; Walk; Stop_Walk; }
+        { rank=same; Start_Run; Run; Stop_Run; }
+        { rank=same; Sprint; Stop_Sprint; }
+        Pivot_Run; Pivot_Sprint;
+        Land_Soft; Land_Heavy;
+    }
+    subgraph cluster_air {
+        label="Air"; style=dashed; color=gray;
+        Jump_Windup; Ascend; Apex; Fall;
+    }
+
+    Idle       -> Start_Walk  [label="input>0"];
+    Start_Walk -> Walk        [label="anim end"];
+    Walk       -> Stop_Walk   [label="input=0"];
+    Stop_Walk  -> Idle        [label="anim end"];
+    Idle       -> Start_Run   [label="sprint+input"];
+    Start_Run  -> Run         [label="anim end"];
+
+    Walk       -> Run         [label="sprint"];
+    Run        -> Walk        [label="release"];
+    Run        -> Stop_Run    [label="input=0"];
+    Stop_Run   -> Idle        [label="anim end"];
+    Run        -> Sprint      [label="sprint"];
+    Sprint     -> Run         [label="release"];
+    Sprint     -> Stop_Sprint [label="input=0"];
+    Stop_Sprint -> Idle       [label="anim end"];
+
+    Run        -> Pivot_Run   [label="180° input"];
+    Pivot_Run  -> Run         [label="anim end"];
+    Sprint     -> Pivot_Sprint [label="180° input"];
+    Pivot_Sprint -> Sprint    [label="anim end"];
+
+    Walk       -> Fall        [label="!floor"];
+    Run        -> Fall        [label="!floor"];
+    Sprint     -> Fall        [label="!floor"];
+
+    { Idle; Walk; Run; Sprint; } -> Jump_Windup [label="jump"];
+    Jump_Windup -> Ascend      [label="anim end"];
+    Ascend     -> Apex         [label="vel.y near 0"];
+    Apex       -> Fall         [label="vel.y<0"];
+
+    Fall       -> Land_Soft    [label="low fall"];
+    Fall       -> Land_Heavy   [label="high fall"];
+    Land_Soft  -> Idle         [label="input=0"];
+    Land_Soft  -> Walk         [label="input>0"];
+    Land_Heavy -> Idle         [label="input=0"];
+    Land_Heavy -> Walk         [label="input>0"];
+}
+
+
+

@@ -1,0 +1,80 @@
+// ========================= PHASE 6 =========================
+// FINAL — All Phases Merged (25 states)
+
+digraph final {
+    rankdir=TB; splines=ortho; nodesep=0.4; ranksep=0.5;
+    node [shape=box, style=rounded, width=1.3, height=0.4, fontname="monospace", fontsize=9];
+    edge [fontname="monospace", fontsize=8];
+    compound=true; newrank=true;
+
+    subgraph cluster_ground {
+        label="Ground"; style=dashed; color="#888";
+        { rank=same; Idle; Start_Walk; Walk; Stop_Walk; }
+        { rank=same; Start_Run; Run; Stop_Run; }
+        { rank=same; Sprint; Stop_Sprint; }
+        Pivot_Run; Pivot_Sprint;
+        Land; Land_Soft; Land_Heavy;
+    }
+    subgraph cluster_air {
+        label="Air"; style=dashed; color="#888";
+        Jump_Windup; Ascend; Apex; Fall;
+    }
+    subgraph cluster_action {
+        label="Action"; style=dashed; color="#888";
+        Ledge_Grab; Vault; Interact;
+    }
+    subgraph cluster_hurt {
+        label="Hurt (Global)"; style=dashed; color="red";
+        Stagger; Wounded_Idle; Wounded_Walk;
+    }
+
+    Idle       -> Start_Walk  [label="input>0"];
+    Start_Walk -> Walk        [label="anim end"];
+    Walk       -> Stop_Walk   [label="input=0"];
+    Stop_Walk  -> Idle        [label="anim end"];
+    Idle       -> Start_Run   [label="sprint+input"];
+    Start_Run  -> Run         [label="anim end"];
+    Walk      -> Run          [label="sprint"];
+    Run       -> Walk         [label="release"];
+    Run       -> Stop_Run     [label="input=0"];
+    Stop_Run  -> Idle         [label="anim end"];
+    Run       -> Sprint       [label="sprint"];
+    Sprint    -> Run          [label="release"];
+    Sprint    -> Stop_Sprint  [label="input=0"];
+    Stop_Sprint -> Idle       [label="anim end"];
+    Run       -> Pivot_Run    [label="180°"];
+    Pivot_Run -> Run          [label="anim end"];
+    Sprint    -> Pivot_Sprint [label="180°"];
+    Pivot_Sprint -> Sprint    [label="anim end"];
+
+    { Idle; Walk; Run; Sprint; } -> Jump_Windup [label="jump"];
+    Jump_Windup -> Ascend      [label="anim end"];
+    Ascend     -> Apex         [label="vel.y≈0"];
+    Apex       -> Fall         [label="vel.y<0"];
+    { Walk; Run; Sprint; } -> Fall [label="!floor"];
+    Fall       -> Jump_Windup  [label="coyote"];
+
+    Fall       -> Land_Soft    [label="low"];
+    Fall       -> Land_Heavy   [label="high"];
+    Land_Soft  -> Idle         [label="input=0"];
+    Land_Soft  -> Walk         [label="input>0"];
+    Land_Heavy -> Idle         [label="input=0"];
+    Land_Heavy -> Walk         [label="input>0"];
+
+    Fall       -> Ledge_Grab   [label="chest hit"];
+    Ledge_Grab -> Idle         [label="pull up"];
+    Ledge_Grab -> Fall         [label="let go"];
+    { Run; Sprint; } -> Vault  [label="waist hit"];
+    Vault      -> Run          [label="anim end"];
+    Vault      -> Sprint       [label="anim end"];
+    Idle       -> Interact     [label="trigger"];
+    Interact   -> Idle         [label="anim end"];
+
+    node [color=red];
+    edge [color=red, style=dashed];
+    Stagger    -> Wounded_Idle [label="HP≤25%"];
+    Stagger    -> Idle         [label="HP>25%", color=grey, style=solid];
+    Wounded_Idle -> Wounded_Walk [dir=both, label="input toggle", style=solid];
+    Wounded_Idle -> Idle       [label="heal", color=grey, style=solid];
+    Wounded_Walk -> Idle       [label="heal", color=grey, style=solid];
+}

@@ -19,13 +19,13 @@ func _ready() -> void:
 	cat.register_command("kill", kill)
 	print_init_messages()
 
-func print_info(text:String):
+func print_info(_text:String):
 	pass
 
-func print_err(text:String):
+func print_err(_text:String):
 	pass
 
-func print_warn(text:String):
+func print_warn(_text:String):
 	pass
 
 func ping() -> void:

@@ -1,0 +1,6 @@
+// =====================================================================
+//  STAR STORY — Player State Machine DOT Graphs
+//  5 progressive phases building from 5 states → 25 states
+//  Render with:  dot -Tpng plans.dot -o plans.png
+//  Render single phase:  csplit plans.dot '/^\/\/ ===/' '{*}' -f phase
+//                        dot -Tpng phase00 -o phase1.png

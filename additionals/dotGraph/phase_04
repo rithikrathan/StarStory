@@ -1,0 +1,48 @@
+// ========================= PHASE 2 =========================
+// Starts, Stops & Game Feel — +6 states = 11 total
+// Adds: Start_Walk, Start_Run, Stop_Walk, Stop_Run, Jump_Windup, Land
+
+digraph phase2 {
+    rankdir=TB; splines=ortho; nodesep=0.5; ranksep=0.6;
+    node [shape=box, style=rounded, width=1.4, height=0.5, fontname="monospace"];
+    edge [fontname="monospace", fontsize=9];
+
+    subgraph cluster_ground {
+        label="Ground"; style=dashed; color=gray;
+        { rank=same; Idle; Start_Walk; Walk; }
+        { rank=same; Stop_Walk; Start_Run; }
+        { rank=same; Stop_Run; }
+        Land;
+    }
+    subgraph cluster_air {
+        label="Air"; style=dashed; color=gray;
+        Jump_Windup; Ascend; Fall;
+    }
+
+    Idle       -> Start_Walk [label="input>0"];
+    Start_Walk -> Walk       [label="anim end"];
+    Walk       -> Stop_Walk  [label="input=0"];
+    Stop_Walk  -> Idle       [label="anim end"];
+
+    Idle       -> Start_Run  [label="sprint+input"];
+    Start_Run  -> Run        [label="anim end"];
+
+    Walk       -> Run        [label="sprint"];
+    Run        -> Walk       [label="release"];
+    Run        -> Stop_Run   [label="input=0"];
+    Stop_Run   -> Idle       [label="anim end"];
+
+    Idle       -> Jump_Windup [label="jump"];
+    Walk       -> Jump_Windup [label="jump"];
+    Run        -> Jump_Windup [label="jump"];
+    Jump_Windup -> Ascend     [label="anim end"];
+
+    Ascend     -> Fall        [label="vel.y<0"];
+    Fall       -> Jump_Windup [label="coyote time"];
+    Fall       -> Land        [label="land"];
+    Land       -> Idle        [label="input=0"];
+    Land       -> Walk        [label="input>0"];
+}
+
+
+

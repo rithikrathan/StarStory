@@ -1,0 +1,28 @@
+// ========================= PHASE 5 =========================
+// Global Interrupts — +3 states = 24 total
+// Adds: Stagger, Wounded_Idle, Wounded_Walk
+
+digraph phase5 {
+    rankdir=TB; splines=ortho; nodesep=0.5; ranksep=0.6;
+    node [shape=box, style=rounded, width=1.4, height=0.5, fontname="monospace"];
+    edge [fontname="monospace", fontsize=9];
+
+    subgraph cluster_hurt {
+        label="Hurt (Global)"; style=dashed; color=red;
+        Stagger; Wounded_Idle; Wounded_Walk;
+    }
+
+    node [shape=plaintext, width=0, height=0];
+    AnyState [label="[Any State]"];
+    AnyState -> Stagger [label="damage taken", style=dashed, color=red];
+
+    node [shape=box, style=rounded, width=1.4, height=0.5, color=red];
+    Stagger -> Wounded_Idle [label="HP ≤ 25%"];
+    Stagger -> Idle [label="HP > 25%", color=gray];
+    Wounded_Idle -> Wounded_Walk [dir=both, label="input / input=0"];
+    Wounded_Idle -> Idle [label="heal event", color=gray];
+    Wounded_Walk -> Idle [label="heal event", color=gray];
+}
+
+
+

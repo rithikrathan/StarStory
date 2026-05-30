@@ -1,0 +1,37 @@
+// ========================= PHASE 4 =========================
+// Environment Hooks — +3 states = 21 total
+// Adds: Ledge_Grab, Vault, Interact
+
+digraph phase4 {
+    rankdir=TB; splines=ortho; nodesep=0.5; ranksep=0.6;
+    node [shape=box, style=rounded, width=1.4, height=0.5, fontname="monospace"];
+    edge [fontname="monospace", fontsize=9];
+
+    subgraph cluster_ground {
+        label="Ground"; style=dashed; color=gray;
+        { rank=same; Idle; Walk; Run; Sprint; }
+    }
+    subgraph cluster_air {
+        label="Air"; style=dashed; color=gray;
+        Fall;
+    }
+    subgraph cluster_action {
+        label="Action"; style=dashed; color=gray;
+        Ledge_Grab; Vault; Interact;
+    }
+
+    Fall       -> Ledge_Grab  [label="chest raycast"];
+    Ledge_Grab -> Idle         [label="pull up"];
+    Ledge_Grab -> Fall         [label="let go"];
+
+    Run        -> Vault       [label="waist raycast"];
+    Sprint     -> Vault       [label="waist raycast"];
+    Vault      -> Run         [label="anim end"];
+    Vault      -> Sprint      [label="anim end"];
+
+    Idle       -> Interact    [label="context trigger"];
+    Interact   -> Idle        [label="anim end"];
+}
+
+
+
