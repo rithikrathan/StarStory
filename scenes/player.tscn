@@ -5,6 +5,27 @@
 [ext_resource type="Texture2D" uid="uid://djrppo7c6xhao" path="res://assets/prototype/textures/prototypingTextures/Dark/texture_04.png" id="3_tuyoq"]
 [ext_resource type="PackedScene" uid="uid://d04m0a0f8xsom" path="res://scenes/camera_controller.tscn" id="4_dqkch"]
 [ext_resource type="Script" uid="uid://doejhfgthu4ky" path="res://addons/finite_state_machine/finite_state_machine.gd" id="5_qlg0r"]
+[ext_resource type="Script" uid="uid://c34l8ge02bkn7" path="res://scripts/statemachine/playerControllerFSM/ground.gd" id="6_ujl30"]
+[ext_resource type="Script" uid="uid://dr4p7345ll8pb" path="res://scripts/statemachine/playerControllerFSM/ground/idle.gd" id="7_31cv2"]
+[ext_resource type="Script" uid="uid://dhv8oirogilem" path="res://scripts/statemachine/playerControllerFSM/ground/walk.gd" id="8_pf23h"]
+[ext_resource type="Script" uid="uid://r6mcu7n2d3dp" path="res://scripts/statemachine/playerControllerFSM/ground/run.gd" id="9_dt7fs"]
+[ext_resource type="Script" uid="uid://bjs0p15li1rr1" path="res://scripts/statemachine/playerControllerFSM/ground/sprint.gd" id="10_wqfne"]
+[ext_resource type="Script" uid="uid://dprixqxmfkxnn" path="res://scripts/statemachine/playerControllerFSM/ground/roll.gd" id="11_wnwbv"]
+[ext_resource type="Script" uid="uid://d01565jin4528" path="res://scripts/statemachine/playerControllerFSM/ground/crouch.gd" id="12_gl8cc"]
+[ext_resource type="Script" uid="uid://b316ytahyveh8" path="res://scripts/statemachine/playerControllerFSM/ground/crouch/crouch_idle.gd" id="13_487ah"]
+[ext_resource type="Script" uid="uid://csjkjp3ohduq5" path="res://scripts/statemachine/playerControllerFSM/ground/crouch/crouch_walk.gd" id="14_md1ol"]
+[ext_resource type="Script" uid="uid://ffvjnxob4rf3" path="res://scripts/statemachine/playerControllerFSM/ground/prone.gd" id="15_bj30b"]
+[ext_resource type="Script" uid="uid://bpmmkatkffi66" path="res://scripts/statemachine/playerControllerFSM/ground/prone/prone_idle.gd" id="16_jc3p3"]
+[ext_resource type="Script" uid="uid://cvdlhnq636yim" path="res://scripts/statemachine/playerControllerFSM/ground/prone/prone_walk.gd" id="17_hax0n"]
+[ext_resource type="Script" uid="uid://cmhi0ly08cd7d" path="res://scripts/statemachine/playerControllerFSM/hurt.gd" id="18_t4otl"]
+[ext_resource type="Script" uid="uid://b7ind7nfbqlfa" path="res://scripts/statemachine/playerControllerFSM/ground/hurt/stagger.gd" id="19_j2b1d"]
+[ext_resource type="Script" uid="uid://bjn2inn3dh0s0" path="res://scripts/statemachine/playerControllerFSM/ground/hurt/hurt_idle.gd" id="20_cs1tg"]
+[ext_resource type="Script" uid="uid://dfgs50f3r2m2c" path="res://scripts/statemachine/playerControllerFSM/ground/hurt/hurt_move.gd" id="21_2dvfe"]
+[ext_resource type="Script" uid="uid://beyjkytsg5sjd" path="res://scripts/statemachine/playerControllerFSM/air.gd" id="22_giy8y"]
+[ext_resource type="Script" uid="uid://i3tfit5do8ac" path="res://scripts/statemachine/playerControllerFSM/air/apex.gd" id="23_fdfoy"]
+[ext_resource type="Script" uid="uid://dggqhnh28rj0m" path="res://scripts/statemachine/playerControllerFSM/air/jump_windup.gd" id="24_hhpqf"]
+[ext_resource type="Script" uid="uid://dn2imi27d4h1p" path="res://scripts/statemachine/playerControllerFSM/air/ascend.gd" id="25_g5jhy"]
+[ext_resource type="Script" uid="uid://cbw5dqwv7amou" path="res://scripts/statemachine/playerControllerFSM/air/fall.gd" id="26_holxr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_smehm"]
 radius = 0.42
@@ -46,6 +67,95 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5698472, 0)
 [node name="cameraController" parent="camerAnchor" unique_id=2130389083 instance=ExtResource("4_dqkch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.006652236, 0)
 
-[node name="movementStateMachine" type="Node" parent="." unique_id=150764935]
+[node name="movementStateMachine" type="Node" parent="." unique_id=150764935 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("5_qlg0r")
+initial_state = NodePath("ground/idle")
 metadata/_custom_type_script = "uid://doejhfgthu4ky"
+
+[node name="ground" type="Node" parent="movementStateMachine" unique_id=196607036]
+script = ExtResource("6_ujl30")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="idle" type="Node" parent="movementStateMachine/ground" unique_id=996169676]
+script = ExtResource("7_31cv2")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="walk" type="Node" parent="movementStateMachine/ground" unique_id=52971301]
+script = ExtResource("8_pf23h")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="run" type="Node" parent="movementStateMachine/ground" unique_id=857560625]
+script = ExtResource("9_dt7fs")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="sprint" type="Node" parent="movementStateMachine/ground" unique_id=78020271]
+script = ExtResource("10_wqfne")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="roll" type="Node" parent="movementStateMachine/ground" unique_id=1876244940]
+script = ExtResource("11_wnwbv")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="crouch" type="Node" parent="movementStateMachine/ground" unique_id=1406218745]
+script = ExtResource("12_gl8cc")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="crouch_idle" type="Node" parent="movementStateMachine/ground/crouch" unique_id=1051972481]
+script = ExtResource("13_487ah")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="crouch_walk" type="Node" parent="movementStateMachine/ground/crouch" unique_id=1912042621]
+script = ExtResource("14_md1ol")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="prone" type="Node" parent="movementStateMachine/ground" unique_id=1037331861]
+script = ExtResource("15_bj30b")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="prone_idle" type="Node" parent="movementStateMachine/ground/prone" unique_id=2146925486]
+script = ExtResource("16_jc3p3")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="prone_walk" type="Node" parent="movementStateMachine/ground/prone" unique_id=250067352]
+script = ExtResource("17_hax0n")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="hurt" type="Node" parent="movementStateMachine/ground" unique_id=2036204421]
+script = ExtResource("18_t4otl")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="stagger" type="Node" parent="movementStateMachine/ground/hurt" unique_id=1794469833]
+script = ExtResource("19_j2b1d")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="hurt_idle" type="Node" parent="movementStateMachine/ground/hurt" unique_id=813335720]
+script = ExtResource("20_cs1tg")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="hurt_move" type="Node" parent="movementStateMachine/ground/hurt" unique_id=520779104]
+script = ExtResource("21_2dvfe")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="air" type="Node" parent="movementStateMachine" unique_id=1257754638]
+script = ExtResource("22_giy8y")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="apex" type="Node" parent="movementStateMachine/air" unique_id=79543236]
+script = ExtResource("23_fdfoy")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="jump_windup" type="Node" parent="movementStateMachine/air" unique_id=446701420]
+script = ExtResource("24_hhpqf")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="ascend" type="Node" parent="movementStateMachine/air" unique_id=923825165]
+script = ExtResource("25_g5jhy")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="fall" type="Node" parent="movementStateMachine/air" unique_id=1095372349]
+script = ExtResource("26_holxr")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="dash" type="Node" parent="movementStateMachine" unique_id=517063898]
+script = ExtResource("6_ujl30")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
