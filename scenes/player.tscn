@@ -50,6 +50,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9991587, 0)
 shape = SubResource("CapsuleShape3D_smehm")
 
 [node name="viewModel" type="Node3D" parent="." unique_id=4567479]
+unique_name_in_owner = true
 
 [node name="redBoi" type="MeshInstance3D" parent="viewModel" unique_id=572365100]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9999176, 0)

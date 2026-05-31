@@ -1,14 +1,16 @@
 extends CharacterBody3D
 
 const SPEED = 6.9
-const JUMP_VELOCITY = 5.5
-const DOUBLE_TAP_WINDOW = 0.3
 const RUN_SPEED = 10.0
 const SPRINT_SPEED = 14.0
+const JUMP_VELOCITY = 5.5
+const DOUBLE_TAP_WINDOW = 0.3
 
 var spawnPosition: Vector3 = Vector3(0,6,0)
-var gravity: Vector3 = Vector3(0,-9.8,0)
 var disabled: bool = false
+
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravVel: Vector3
 
 var last_forward_press_time: float = 0.0
 var wantsRun: bool = false
@@ -18,7 +20,6 @@ var fsm: FiniteStateMachine
 
 var health = 100
 var isDed = false
-
 
 func kill(message: String = "fuxk you in perticular"):
 	print("Reason for Death: " + message)
@@ -64,7 +65,7 @@ func _process(delta: float):
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		velocity += gravity * delta
+		velocity += Vector3.ZERO if is_on_floor() else gravVel.move_toward(Vector3(0, velocity.y - gravity, 0), gravity * delta)
 	if fsm.current_state:
 		fsm._state_down_call(fsm.current_state.id, "physics_update", delta)
 
