@@ -7,6 +7,7 @@ func enter() -> void:
 	player.velocity.y = 0.0
 	print("State: Run")
 
+@warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
 	if _finite_state_machine.current_state != self:
 		return
@@ -14,15 +15,14 @@ func physics_update(delta: float) -> void:
 	if not player:
 		player = _finite_state_machine.get_parent() as CharacterBody3D
 
-	var input_dir = player.get_input_dir()
-	if input_dir.length() > 0:
-		var dir = player.get_player_relative_dir(input_dir)
-		player.velocity.x = dir.x * player.RUN_SPEED
-		player.velocity.z = dir.z * player.RUN_SPEED
+	var inputDir = player.get_input_dir()
 
-		if player.shift_just_pressed:
-			transition("ground/walk")
+	if inputDir.y > 0:
+		#movement code here
+		if Input.is_action_just_pressed("sprint"):
+			transition("ground/sprint")
 			return
+
 	else:
 		transition("ground/idle")
 		return

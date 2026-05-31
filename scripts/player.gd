@@ -9,35 +9,26 @@ const SPRINT_SPEED = 14.0
 var spawnPosition: Vector3 = Vector3(0,6,0)
 var gravity: Vector3 = Vector3(0,-9.8,0)
 var disabled: bool = false
-var last_w_press_time: float = 0.0
-var wants_sprint: bool = false
+
+var last_forward_press_time: float = 0.0
+var wantsRun: bool = false
+
 var camera_controller: Node3D
 var fsm: FiniteStateMachine
 
-var _w_was_pressed: bool = false
-var _shift_was_pressed: bool = false
-var _esc_was_pressed: bool = false
+var health = 100
+var isDed = false
 
-var w_just_pressed: bool = false
-var shift_just_pressed: bool = false
-var esc_just_pressed: bool = false
 
-func kill(message: String):
+func kill(message: String = "fuxk you in perticular"):
 	print("Reason for Death: " + message)
 	self.position = spawnPosition
 
-func get_input_dir() -> Vector2:
-	var x = 0.0
-	if Input.is_key_pressed(KEY_D): x += 1.0
-	if Input.is_key_pressed(KEY_A): x -= 1.0
-	var y = 0.0
-	if Input.is_key_pressed(KEY_W): y += 1.0
-	if Input.is_key_pressed(KEY_S): y -= 1.0
-	return Vector2(x, y)
-
+# NOTE: No changes needed
 func get_player_relative_dir(input_dir: Vector2) -> Vector3:
 	return (transform.basis * Vector3(input_dir.x, 0, -input_dir.y)).normalized()
 
+# NOTE: No changes needed
 func get_camera_relative_dir(input_dir: Vector2) -> Vector3:
 	var cam_basis = camera_controller.transform.basis
 	var forward = Vector3(-cam_basis.z.x, 0, -cam_basis.z.z).normalized()
@@ -52,32 +43,28 @@ func _ready() -> void:
 	fsm = $movementStateMachine
 	fsm.set_physics_process(false)
 
-func _physics_process(delta: float) -> void:
-	w_just_pressed = Input.is_key_pressed(KEY_W) and not _w_was_pressed
-	_w_was_pressed = Input.is_key_pressed(KEY_W)
+func get_input_dir() -> Vector2:
+	# return Input.get_vector("moveRight","moveLeft", "moveForward", "moveBackward")
+	return Input.get_vector("moveLeft","moveRight", "moveBackward", "moveForward")
 
-	shift_just_pressed = Input.is_key_pressed(KEY_SHIFT) and not _shift_was_pressed
-	_shift_was_pressed = Input.is_key_pressed(KEY_SHIFT)
-
-	esc_just_pressed = Input.is_key_pressed(KEY_ESCAPE) and not _esc_was_pressed
-	_esc_was_pressed = Input.is_key_pressed(KEY_ESCAPE)
-
-	if not is_on_floor():
-		velocity += gravity * delta
-
-	if esc_just_pressed:
+@warning_ignore("unused_parameter")
+func _process(delta: float):
+	if Input.is_action_just_pressed("esc"):
 		disabled = !disabled
 
-	if disabled:
-		move_and_slide()
-		return
-
-	if w_just_pressed:
+	if Input.is_action_just_pressed("moveForward"):
 		var now = Time.get_ticks_msec() / 1000.0
-		if now - last_w_press_time < DOUBLE_TAP_WINDOW:
-			wants_sprint = true
-		last_w_press_time = now
+		if now - last_forward_press_time < DOUBLE_TAP_WINDOW:
+			wantsRun = true
+			print("will run in next input")
+		last_forward_press_time = now
 
+	# if fsm.current_state:
+	# 	fsm._state_down_call(fsm.current_state.id, "logic_update", delta)
+
+func _physics_process(delta: float) -> void:
+	if not is_on_floor():
+		velocity += gravity * delta
 	if fsm.current_state:
 		fsm._state_down_call(fsm.current_state.id, "physics_update", delta)
 

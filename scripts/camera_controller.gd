@@ -14,6 +14,7 @@ func _ready() -> void:
 	player = get_parent().get_parent() as CharacterBody3D
 	camera = $SpringArm3D/Camera3D
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	get_parent().rotation.y = -player.rotation.y
 
 func _input(event: InputEvent) -> void:
 	if player.disabled:
