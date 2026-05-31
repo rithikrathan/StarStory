@@ -18,13 +18,19 @@ func physics_update(delta: float) -> void:
 	if not player:
 		player = _finite_state_machine.get_parent() as CharacterBody3D
 
-	var inputDir = player.get_input_dir()
+	if player.disabled:
+		transition("ground/idle")
 
+	var inputDir = player.get_input_dir()
 	if inputDir.y > 0:
 		var dir = player.get_camera_relative_dir(inputDir)
 		player.velocity.x = dir.x * player.RUN_SPEED 
 		player.velocity.z = dir.z * player.RUN_SPEED 
-		vModel.look_at(vModel.global_position + dir)
+
+		# rotate view model
+		var target_basis = Basis.looking_at(dir)
+		var target_quat = Quaternion(target_basis)
+		vModel.quaternion = vModel.quaternion.slerp(target_quat, delta * 10.0)
 
 		if Input.is_action_just_pressed("sprint"):
 			transition("ground/sprint")

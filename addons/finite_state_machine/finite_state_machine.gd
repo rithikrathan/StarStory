@@ -7,6 +7,7 @@ extends FSM
 @export var initial_state: State
 
 var current_state: State
+var from_state: State
 var _states: Dictionary[String, State]
 
 ## Notify when current state transitioned (from->to)
@@ -85,7 +86,7 @@ func _state_up_call(state_id: String, method_name: String, ...args: Array):
 func transition(to_id: String):
 	var to_state: State = _states[to_id]
 	if to_state and to_state != current_state:
-		var from_state = current_state
+		from_state = current_state
 		current_state = to_state
 		_state_up_call(from_state.id, 'exit')
 		_state_down_call(to_state.id, 'enter')

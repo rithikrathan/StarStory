@@ -17,6 +17,7 @@ func _ready() -> void:
 	cat.register_command("ping", ping, false)
 	cat.register_command("tp", tp)
 	cat.register_command("kill", kill)
+	cat.register_command("ch", ch)
 	print_init_messages()
 
 func print_info(_text:String):
@@ -38,6 +39,28 @@ func kill(args: Array) -> void:
 			player.kill("Killed by command")
 		_:
 			cat.print_message("Invalid target, nothing was killed")
+
+var ch_targets = {
+	"@p": {
+		"sprintLength": {"node": "camerAnchor/cameraController/SpringArm3D", "prop": "spring_length"},
+		"fov": {"node": "camerAnchor/cameraController/SpringArm3D/Camera3D", "prop": "fov"},
+	},
+}
+
+func ch(args: Array) -> void:
+	if args.size() < 3:
+		cat.print_message("Usage: /ch <target> <thing> <value>")
+		return
+	var props = ch_targets.get(args[0])
+	if not props:
+		cat.print_message("Invalid target. Available: " + ", ".join(ch_targets.keys()))
+		return
+	var entry = props.get(args[1])
+	if not entry:
+		cat.print_message("Unknown. Available: " + ", ".join(props.keys()))
+		return
+	player.get_node(entry.node).set(entry.prop, float(args[2]))
+	cat.print_message(args[1] + " set to " + args[2])
 
 func tp(args: Array) -> void:
 	match args[0]:

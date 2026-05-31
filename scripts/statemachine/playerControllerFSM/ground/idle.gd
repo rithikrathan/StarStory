@@ -22,7 +22,8 @@ func physics_update(delta: float) -> void:
 		return
 
 	var input_dir = player.get_input_dir()
-	if input_dir.length() > 0:
+
+	if input_dir.length() > 0 and !player.disabled:
 		if Input.is_action_just_pressed("sprint"):
 			transition("ground/sprint")
 		else:
