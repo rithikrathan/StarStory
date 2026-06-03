@@ -15,3 +15,6 @@ screenshots/
 *.psd
 *.blend
 *.blend1
+
+# Addons
+/addons/goblend/
