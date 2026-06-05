@@ -1,5 +1,10 @@
 extends CharacterBody3D
 
+@export var walkAccleration:float = 8.0
+@export var runAccleration:float = 12.0
+@export var sprintAccleration:float = 14.0
+
+
 const SPEED = 6.9
 const RUN_SPEED = 10.0
 const SPRINT_SPEED = 14.0

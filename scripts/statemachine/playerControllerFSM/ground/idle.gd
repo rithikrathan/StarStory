@@ -3,6 +3,8 @@ extends State
 
 var player: CharacterBody3D
 
+const FRICTION: float = 12.0
+
 func enter() -> void:
 	player = _finite_state_machine.get_parent() as CharacterBody3D
 	player.velocity.y = 0.0
@@ -30,5 +32,5 @@ func physics_update(delta: float) -> void:
 			transition("ground/walk")
 	else:
 		# reset velocity so velocity of the previous states wont be affecting this state
-		player.velocity.x = 0
-		player.velocity.z = 0
+		player.velocity.x = move_toward(player.velocity.x, 0.0, FRICTION * delta)
+		player.velocity.z = move_toward(player.velocity.z, 0.0, FRICTION * delta)
