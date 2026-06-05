@@ -23,7 +23,7 @@ config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/console_and_textchat/plugin.cfg", "res://addons/finite_state_machine/plugin.cfg")
+enabled=PackedStringArray("res://addons/console_and_textchat/plugin.cfg", "res://addons/finite_state_machine/plugin.cfg", "res://addons/goblend/plugin.cfg")
 
 [global_group]
 
