@@ -95,4 +95,6 @@ plans/                       — dev notes and plans
 
 - [Console and Textchat](https://github.com/Mike-Bros/ConsoleAddon) by Keilain (Mike-Bros) — chat console plugin
 - [Finite State Machine](https://github.com/iamyoki/godot-finite-state-machine) by iamyoki — FSM framework
+
+Textures by [Kenney](https://kenney.nl/). All other third-party assets belong to their respective owners.
 ```
