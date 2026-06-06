@@ -90,4 +90,9 @@ scenes/
   player.tscn
   testworld.scn
 plans/                       — dev notes and plans
+
+## Acknowledgments
+
+- [Console and Textchat](https://github.com/Mike-Bros/ConsoleAddon) by Keilain (Mike-Bros) — chat console plugin
+- [Finite State Machine](https://github.com/iamyoki/godot-finite-state-machine) by iamyoki — FSM framework
 ```
