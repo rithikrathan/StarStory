@@ -10,6 +10,7 @@ func enter() -> void:
 	player.velocity.y = 0.0
 	print("State: Idle")
 
+@warning_ignore("unused_parameter")
 func logic_update(delta: float) -> void:
 	pass
 
