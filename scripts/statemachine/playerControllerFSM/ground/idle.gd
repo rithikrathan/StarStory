@@ -12,6 +12,7 @@ func enter() -> void:
 
 @warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
+
 	if _finite_state_machine.current_state != self:
 		return
 
@@ -32,5 +33,9 @@ func physics_update(delta: float) -> void:
 			transition("ground/walk")
 	else:
 		# reset velocity so velocity of the previous states wont be affecting this state
-		player.velocity.x = move_toward(player.velocity.x, 0.0, FRICTION * delta)
-		player.velocity.z = move_toward(player.velocity.z, 0.0, FRICTION * delta)
+
+		# player.velocity.x = move_toward(player.velocity.x, 0.0, FRICTION * delta)
+		# player.velocity.z = move_toward(player.velocity.z, 0.0, FRICTION * delta)
+
+		player.velocity = player.velocity.lerp(Vector3.ZERO, FRICTION * delta)
+

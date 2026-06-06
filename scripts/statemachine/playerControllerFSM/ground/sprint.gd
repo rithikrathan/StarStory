@@ -23,10 +23,8 @@ func physics_update(delta: float) -> void:
 	var inputDir = player.get_input_dir()
 	if inputDir.y > 0:
 		var dir = player.get_camera_relative_dir(inputDir)
-
 		var target = dir *  player.SPRINT_SPEED
-		player.velocity.x = move_toward(player.velocity.x, target.x, player.sprintAccleration * delta)
-		player.velocity.z = move_toward(player.velocity.z, target.z, player.sprintAccleration * delta)
+		player.velocity = player.velocity.lerp(target, player.sprintAccleration * delta)
 
 		# rotate view model
 		var target_basis = Basis.looking_at(dir)

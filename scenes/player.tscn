@@ -161,3 +161,12 @@ metadata/_custom_type_script = "uid://2y37yx57ooc4"
 [node name="dash" type="Node" parent="movementStateMachine" unique_id=517063898]
 script = ExtResource("6_ujl30")
 metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="rayController" type="Node3D" parent="." unique_id=1998390786]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.999637, 0)
+
+[node name="groundCheck" type="RayCast3D" parent="rayController" unique_id=1021491761]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.76512295, 0)
+target_position = Vector3(0, -0.58, 0)
+debug_shape_custom_color = Color(0.88513756, 0.19899696, 1, 1)

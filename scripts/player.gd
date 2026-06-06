@@ -4,7 +4,6 @@ extends CharacterBody3D
 @export var runAccleration:float = 12.0
 @export var sprintAccleration:float = 14.0
 
-
 const SPEED = 6.9
 const RUN_SPEED = 10.0
 const SPRINT_SPEED = 14.0
@@ -69,8 +68,10 @@ func _process(delta: float):
 	# 	fsm._state_down_call(fsm.current_state.id, "logic_update", delta)
 
 func _physics_process(delta: float) -> void:
+	# gravity and y velocity, so just make it to use floor normal
 	if not is_on_floor():
 		velocity += Vector3.ZERO if is_on_floor() else gravVel.move_toward(Vector3(0, velocity.y - gravity, 0), gravity * delta)
+
 	if fsm.current_state:
 		fsm._state_down_call(fsm.current_state.id, "physics_update", delta)
 
