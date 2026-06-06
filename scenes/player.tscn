@@ -45,6 +45,8 @@ uv1_triplanar = true
 [node name="player" type="CharacterBody3D" unique_id=1563947440 groups=["player"]]
 script = ExtResource("1_dqkch")
 
+[node name="visualsAndCollider" type="Node3D" parent="." unique_id=732173188]
+
 [node name="collider" type="CollisionShape3D" parent="." unique_id=706183809]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9991587, 0)
 shape = SubResource("CapsuleShape3D_smehm")

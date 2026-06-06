@@ -16,7 +16,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 
 	stamina.value = player.stamina
-	staminaLabel.text = "Stamina: " + str(player.stamina)
+	staminaLabel.text = "Stamina: " + str(int(player.stamina))
 
 	if cat.visible:
 		player.disabled = true
