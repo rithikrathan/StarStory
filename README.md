@@ -1,133 +1,93 @@
-# Console and Textchat Addon
+# Star Story
 
-## Purpose
+A third-person 3D character controller playground built in Godot 4.
 
-This addon includes a custom node which can represent a console and textchat.
-You can print messages in game to the console to help you debug or register commands for debugging.
+## Controls
 
-![Demo 2](https://raw.githubusercontent.com/Mike-Bros/ConsoleAddon/main/screenshots/demo2.png)
+| Key | Action |
+|-----|--------|
+| WASD | Movement |
+| Space | Jump (hold to charge) |
+| Shift | Sprint |
+| Mouse | Look around |
+| Esc | Toggle cursor / pause input |
+| / or T | Open chat console |
+| Enter | Submit chat / command |
 
-## Features
+## Movement States
 
-[x] Usable as textchat
-[x] Usable as a simple console for your game
-[x] Simple debugging through custom cheatcodes
-[x] Text History
-[x] Textstyling through code
-[x] Customization settings
+The player uses a hierarchical finite state machine under `scripts/statemachine/playerControllerFSM/`:
 
-## Installation
+**Ground states:**
+- Idle — standing still, regenerates stamina
+- Walk — slow movement
+- Run — medium speed (activated by double-tap W)
+- Sprint — fast movement, drains stamina fast
+- Crouch / CrouchIdle / CrouchWalk — lowered profile
+- Prone / ProneIdle / ProneWalk — fully prone
+- Roll — dodge roll
+- JumpWindup — hold Space to charge jump (0–10 scale)
 
-[Install via Godot AssetLib](https://godotengine.org/asset-library/asset/2946) and enable plugin in project settings.
+**Air states:**
+- Ascend — rising after jump
+- Apex — peak of the arc
+- Fall — descending with air control
 
-See [Installing a plugin](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html#installing-a-plugin) from the Godot docs for further assistance.
+**Hurt states:**
+- Stagger — reaction to damage
+- HurtIdle / HurtMove — recovery
 
-## How to use
+## Stamina
 
-Add the "ConsoleAndTextchat" node to your scene tree. Adjust positioning and size in the scene.
+Each movement state has a drain or regain rate. Stamina is capped at MAX_STAMINA.
 
-![Scene Tree](https://raw.githubusercontent.com/Mike-Bros/ConsoleAddon/main/screenshots/Scene_tree.PNG)
+| State | Stamina |
+|-------|---------|
+| Idle | Regenerates at 42/s |
+| Walk | Drains at 3/s |
+| Run | Drains at 8/s |
+| Sprint | Drains at 20/s |
 
-### Printing messages to the console
+## Chat Commands
 
-To print messages use the `node.print_message(text: String)` method. Insert the string you want to be printed.
-You can customize the message using different colors and text formatting or add a timestamp. To see how you
-customize your message look in the demo and demo2 scenes for examples.
+Open the console with `/` or `T`, then type:
 
-### Commands
+| Command | Description |
+|---------|-------------|
+| `/help` | List all registered commands |
+| `/clear` | Clear the console |
+| `/ping` | Ping-pong test |
+| `/kill @p` | Kill the player |
+| `/tp <location>` | Teleport to a spawn point |
+| `/ch @p <property> <value>` | Modify player properties |
 
-#### Creating commands
+### Teleport locations
 
-To create commands use the `node.register_command(command_name: String, function: Callable, arguments: bool = true)` method.
-Enter a name and the method/function to be called upon entering the command into the console. The `arguments` argument describes
-wether the callback method has arguments attached.
+`/tp mainSpawn`, `/tp buildings`, `/tp terrain`, `/tp slope`, `/tp crouch`, `/tp platforms`
 
-#### Calling commands
+### /ch properties
 
-Calling commands through the console is simple. Every command starts with "/" followed by the command itself.
-Additionally, every argument is entered with a space inbetween: "/say_hello_to player_one playert_wo".
-The entered arguments are given to the method that was registered to a given comment as an array of Strings `["player_one", "player_two"]`.
+`/ch @p stamina <value>` — set stamina  
+`/ch @p springLength <value>` — set camera spring arm length  
+`/ch @p fov <value>` — set camera FOV
 
-### Build in commands
+## Project Structure
 
-- help\
-  Displays all registered commands.
-
-- toggle_console\
-  Used to toggle the console. The console can also be toggled using the "K" key.
-
-- clear\
-  Used to clear the console of all text.
-
-### Controls
-
-The console supports navigating command history using Shift + Arrow keys.\
-_If anyone knows how to simplify this to just the Arrow key, notify me. Currently it clashes with build in `LineEdit` controls_
-
-- `Shift + Up Arrow`\
-  Navigate to the previous command.
-
-- `Shift + Down Arrow`\
-  Navigate to the next command.
-
-Others:
-
-- `k`\
-  Toggle console window.
-
-- `Enter`\
-  Grab focus of the `text_input_line` to insert `text`
-
-### Export Properties
-
-- Vector2 `Minimum Size`\
-  Describes the minimum_size of the console window.
-
-- Theme `Text Input Line Default Theme`\
-  Add a theme to style the console window.
-
-- bool `Override Theme Colors`\
-  `true`; If `true` `History Preview Color` will override the colors set in the theme.
-
-- Color `History Preview Color`\
-  `Color Salmon`; A color to highlight the `text` in history mode.
-
-- bool `Disable Text Input Line`\
-  `false`; Disables the `text_input_line`.
-
-- bool `Disable Key Enter Focus`\
-  `false`; Disables the control to grab focus on `Enter` pressed.
-
-### Methods
-
-- void `print_message(text: String)`\
-  Main method to print a message to the console/textchat. The `text` string can be customized using the different text formatting methods.
-  Text formatting can be achieved with bbcode.
-- void `register_command(command_name: String, function: Callable, arguments: bool = true)`\
-  Register a command to be used through the console. The `command_name` is written into the console.
-  The `function` is a Callable that is called when the `command_name` is entered into the console.
-  If the `function` has no arguments set `arguments` to `false`.
-
-- void `delete_command(command_name: String)`\
-  Deletes a registered command.
-
-- void `clear_console()`\
-  Deletes all entered `text`.
-
-- String `timestamp()`\
-  Return the current system time in the form [h:min].
-
-- String `col(color, text: String)`\
-  To color a `text` insert `color` as a `Color` type or as a string that represents a html/hex color code in the form `#xxxxxx`.
-
-- String `bold(text: String)`\
-  To print a `text` in bold.
-
-- String `italic(text: String)`\
-  To print a `text` in italic.
-
-- String `underline(text: String)`\
-  To print a underlined `text`.
-
-- String `crossed(text: String)`\
-  To print a crossed `text`.
+```
+scripts/
+  player.gd                  — main player controller
+  camera_controller.gd       — mouse look + FOV dynamics
+  chatBox.gd                 — chat command registration
+  testworld.gd               — test scene logic
+  statemachine/              — FSM states
+    playerControllerFSM/
+      ground/                — ground movement states
+      air/                   — jump and air states
+addons/
+  console_and_textchat/      — chat console plugin
+  finite_state_machine/      — FSM framework
+scenes/
+  player.tscn
+  testworld.scn
+plans/                       — dev notes and plans
+```
