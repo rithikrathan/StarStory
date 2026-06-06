@@ -1,29 +1,46 @@
-extends CharacterBody3D
+# INFO: -----------------------------------------------------------------------------
+# Script: player.gd
+# Version: 0.1
+# Author: RITHIK RATHAN C. <github.com/rithikrathan>
+# License: 
+# Repository: https://github.com/rithikrathan/StarStory.git
+# Project: star-story
+# Created: 2026-06-06
+# Description: 
+#			Main script of the player controller, this has all the 
+# properties and helper functions and statemachine initializations
+# -----------------------------------------------------------------------------
 
-@export var walkAccleration:float = 8.0
-@export var runAccleration:float = 12.0
-@export var sprintAccleration:float = 14.0
+extends CharacterBody3D
 
 const SPEED = 6.9
 const RUN_SPEED = 10.0
 const SPRINT_SPEED = 14.0
 const JUMP_VELOCITY = 5.5
 const DOUBLE_TAP_WINDOW = 0.3
+const MAX_STAMINA = 300
+
+@export var walkAccleration:float = 8.0
+@export var runAccleration:float = 12.0
+@export var sprintAccleration:float = 14.0
+@export var sprintTimeout:float = 34.0
+
+@export var stamina:float = 300
 
 var spawnPosition: Vector3 = Vector3(0,6,0)
-var disabled: bool = false
-
-var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var gravVel: Vector3
-
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var last_forward_press_time: float = 0.0
+var health = 100
+var isDed = false
+var disabled: bool = false
 var wantsRun: bool = false
 
 var camera_controller: Node3D
 var fsm: FiniteStateMachine
 
-var health = 100
-var isDed = false
+# =-=-=-=-=-=-=-= [ TIMERS ] =-=-=-=-=-=-=-=
+var sprintTimer = Timer.new()
 
 func kill(message: String = "fuxk you in perticular"):
 	print("Reason for Death: " + message)
@@ -64,10 +81,16 @@ func _process(delta: float):
 			print("will run in next input")
 		last_forward_press_time = now
 
-	# if fsm.current_state:
-	# 	fsm._state_down_call(fsm.current_state.id, "logic_update", delta)
+	if fsm.current_state:
+		fsm._state_down_call(fsm.current_state.id, "logic_update", delta)
+	
+	if stamina > MAX_STAMINA:
+		stamina = MAX_STAMINA # cap stamina incase it goes out of reach
+
+
 
 func _physics_process(delta: float) -> void:
+
 	# gravity and y velocity, so just make it to use floor normal
 	if not is_on_floor():
 		velocity += Vector3.ZERO if is_on_floor() else gravVel.move_toward(Vector3(0, velocity.y - gravity, 0), gravity * delta)

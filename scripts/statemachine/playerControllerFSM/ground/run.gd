@@ -1,3 +1,15 @@
+#INFO:
+# -----------------------------------------------------------------------------
+# Script: run.gd
+# Version: 0.1
+# Author: RITHIK RATHAN C. <github.com/rithikrathan>
+# License: 
+# Repository: 
+# Project: star-story
+# Created: 2026-06-06
+# Description: test descritption bro
+# -----------------------------------------------------------------------------
+
 extends State
 
 var player: CharacterBody3D
@@ -9,6 +21,9 @@ func enter() -> void:
 	player = _finite_state_machine.get_parent() as CharacterBody3D
 	player.velocity.y = 0.0
 	print("State: Run")
+
+func logic_update(delta: float) -> void:
+	pass
 
 @warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
@@ -25,8 +40,7 @@ func physics_update(delta: float) -> void:
 	if inputDir.y > 0:
 		var dir = player.get_camera_relative_dir(inputDir)
 		var target = dir *  player.RUN_SPEED
-		player.velocity.x = move_toward(player.velocity.x, target.x, player.runAccleration * delta)
-		player.velocity.z = move_toward(player.velocity.z, target.z, player.runAccleration * delta)
+		player.velocity = player.velocity.lerp(target, player.runAccleration * delta)
 
 		# rotate view model
 		var target_basis = Basis.looking_at(dir)

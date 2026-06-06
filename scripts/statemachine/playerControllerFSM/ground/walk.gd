@@ -10,6 +10,9 @@ func enter() -> void:
 	player.velocity.y = 0.0
 	print("State: Walk")
 
+func logic_update(delta: float) -> void:
+	pass
+
 @warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
 	if _finite_state_machine.current_state != self:
