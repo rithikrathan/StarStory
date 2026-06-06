@@ -18,13 +18,15 @@ const RUN_SPEED = 10.0
 const SPRINT_SPEED = 14.0
 const JUMP_VELOCITY = 5.5
 const DOUBLE_TAP_WINDOW = 0.3
-const MAX_STAMINA = 300
+
+const MAX_STAMINA = 500
 
 @export var walkAccleration:float = 8.0
 @export var runAccleration:float = 12.0
 @export var sprintAccleration:float = 14.0
 @export var sprintTimeout:float = 34.0
 
+# Stamina is the time remaining => stamina / drainRate = seconds left of sprint.
 @export var stamina:float = 300
 
 var spawnPosition: Vector3 = Vector3(0,6,0)
@@ -86,6 +88,8 @@ func _process(delta: float):
 	
 	if stamina > MAX_STAMINA:
 		stamina = MAX_STAMINA # cap stamina incase it goes out of reach
+	elif stamina < 0:
+		stamina = 0 # cap stamina incase it goes negative
 
 
 

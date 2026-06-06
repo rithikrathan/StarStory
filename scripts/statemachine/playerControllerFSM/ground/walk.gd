@@ -4,17 +4,18 @@ extends State
 var player: CharacterBody3D
 var vModel: Node3D
 
+@export var drainRate:float = 3.0
+
 func enter() -> void:
 	player = _finite_state_machine.get_parent() as CharacterBody3D
 	vModel = %"viewModel"
 	player.velocity.y = 0.0
 	print("State: Walk")
 
-@warning_ignore("unused_parameter")
 func logic_update(delta: float) -> void:
-	pass
+		if player.stamina <= player.MAX_STAMINA:
+			player.stamina = move_toward(player.stamina, 0, drainRate * delta)
 
-@warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
 	if _finite_state_machine.current_state != self:
 		return
@@ -31,6 +32,7 @@ func physics_update(delta: float) -> void:
 		transition("ground/idle")
 
 	var inputDir = player.get_input_dir()
+
 	if inputDir.length() > 0:
 		var dir = player.get_camera_relative_dir(inputDir)
 

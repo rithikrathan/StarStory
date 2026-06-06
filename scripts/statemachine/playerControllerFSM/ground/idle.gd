@@ -1,6 +1,8 @@
 extends State
 #NOTE: perfect
 
+@export var regainRate:float = 42.0
+
 var player: CharacterBody3D
 
 const FRICTION: float = 12.0
@@ -10,11 +12,11 @@ func enter() -> void:
 	player.velocity.y = 0.0
 	print("State: Idle")
 
-@warning_ignore("unused_parameter")
 func logic_update(delta: float) -> void:
-	pass
+	if player.stamina <= player.MAX_STAMINA:
+		player.stamina = move_toward(player.stamina, player.MAX_STAMINA, regainRate * delta)
 
-@warning_ignore("unused_parameter")
+
 func physics_update(delta: float) -> void:
 
 	if _finite_state_machine.current_state != self:

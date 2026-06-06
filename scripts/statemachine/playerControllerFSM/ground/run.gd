@@ -12,6 +12,8 @@
 
 extends State
 
+@export var drainRate:float = 8.0
+
 var player: CharacterBody3D
 var vModel: Node3D
 # var viewModel: Node3D = _finite_state_machine.get_parent().get_child("viewModel")
@@ -22,11 +24,10 @@ func enter() -> void:
 	player.velocity.y = 0.0
 	print("State: Run")
 
-@warning_ignore("unused_parameter")
 func logic_update(delta: float) -> void:
-	pass
+		if player.stamina <= player.MAX_STAMINA:
+			player.stamina = move_toward(player.stamina, 0, drainRate * delta)
 
-@warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
 	if _finite_state_machine.current_state != self:
 		return
