@@ -12,8 +12,11 @@
 [ext_resource type="Script" uid="uid://bjs0p15li1rr1" path="res://scripts/statemachine/playerControllerFSM/ground/sprint.gd" id="10_wqfne"]
 [ext_resource type="Script" uid="uid://dprixqxmfkxnn" path="res://scripts/statemachine/playerControllerFSM/ground/roll.gd" id="11_wnwbv"]
 [ext_resource type="Script" uid="uid://d01565jin4528" path="res://scripts/statemachine/playerControllerFSM/ground/crouch.gd" id="12_gl8cc"]
+[ext_resource type="Script" uid="uid://dggqhnh28rj0m" path="res://scripts/statemachine/playerControllerFSM/ground/idle_jump_windup.gd" id="12_pf23h"]
 [ext_resource type="Script" uid="uid://b316ytahyveh8" path="res://scripts/statemachine/playerControllerFSM/ground/crouch/crouch_idle.gd" id="13_487ah"]
+[ext_resource type="Script" uid="uid://5duk4kc0vkl" path="res://scripts/statemachine/playerControllerFSM/ground/run_jump_windup.gd" id="13_dt7fs"]
 [ext_resource type="Script" uid="uid://csjkjp3ohduq5" path="res://scripts/statemachine/playerControllerFSM/ground/crouch/crouch_walk.gd" id="14_md1ol"]
+[ext_resource type="Script" uid="uid://vswom1toxohp" path="res://scripts/statemachine/playerControllerFSM/ground/sprint_jump_windup.gd" id="14_wqfne"]
 [ext_resource type="Script" uid="uid://ffvjnxob4rf3" path="res://scripts/statemachine/playerControllerFSM/ground/prone.gd" id="15_bj30b"]
 [ext_resource type="Script" uid="uid://bpmmkatkffi66" path="res://scripts/statemachine/playerControllerFSM/ground/prone/prone_idle.gd" id="16_jc3p3"]
 [ext_resource type="Script" uid="uid://cvdlhnq636yim" path="res://scripts/statemachine/playerControllerFSM/ground/prone/prone_walk.gd" id="17_hax0n"]
@@ -23,15 +26,30 @@
 [ext_resource type="Script" uid="uid://dfgs50f3r2m2c" path="res://scripts/statemachine/playerControllerFSM/ground/hurt/hurt_move.gd" id="21_2dvfe"]
 [ext_resource type="Script" uid="uid://beyjkytsg5sjd" path="res://scripts/statemachine/playerControllerFSM/air.gd" id="22_giy8y"]
 [ext_resource type="Script" uid="uid://i3tfit5do8ac" path="res://scripts/statemachine/playerControllerFSM/air/apex.gd" id="23_fdfoy"]
-[ext_resource type="Script" uid="uid://dggqhnh28rj0m" path="res://scripts/statemachine/playerControllerFSM/air/jump_windup.gd" id="24_hhpqf"]
 [ext_resource type="Script" uid="uid://dn2imi27d4h1p" path="res://scripts/statemachine/playerControllerFSM/air/ascend.gd" id="25_g5jhy"]
 [ext_resource type="Script" uid="uid://cbw5dqwv7amou" path="res://scripts/statemachine/playerControllerFSM/air/fall.gd" id="26_holxr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_smehm"]
 radius = 0.42
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujl30"]
+render_priority = 1
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+grow = true
+grow_amount = 0.023
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+metadata/_stencil_owned = true
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ur7pv"]
+next_pass = SubResource("StandardMaterial3D_ujl30")
 albedo_texture = ExtResource("2_qlg0r")
+stencil_mode = 1
+stencil_flags = 2
+stencil_outline_thickness = 0.023
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_y4r1p"]
 radius = 0.42
@@ -39,11 +57,14 @@ radius = 0.42
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d2wvv"]
 albedo_texture = ExtResource("3_tuyoq")
 uv1_triplanar = true
+stencil_flags = 2
+stencil_outline_thickness = 0.049
 
 [sub_resource type="BoxMesh" id="BoxMesh_3v2ag"]
 
 [node name="player" type="CharacterBody3D" unique_id=1563947440 groups=["player"]]
 script = ExtResource("1_dqkch")
+stamina = 500.0
 
 [node name="visualsAndCollider" type="Node3D" parent="." unique_id=732173188]
 
@@ -61,7 +82,7 @@ material_override = SubResource("StandardMaterial3D_ur7pv")
 mesh = SubResource("CapsuleMesh_y4r1p")
 
 [node name="glasses" type="MeshInstance3D" parent="viewModel" unique_id=572404613]
-transform = Transform3D(0.64114326, 0, 0, 0, 0.19311573, 0, 0, 0, 0.21586563, 0.004, 1.514, -0.351)
+transform = Transform3D(-0.6411413, 0, 0.0005349736, 0, 0.19311573, 0, -0.0015889268, 0, -0.21586496, 0.00952932, 1.4914685, -0.3509863)
 material_override = SubResource("StandardMaterial3D_d2wvv")
 mesh = SubResource("BoxMesh_3v2ag")
 
@@ -98,6 +119,18 @@ metadata/_custom_type_script = "uid://2y37yx57ooc4"
 
 [node name="roll" type="Node" parent="movementStateMachine/ground" unique_id=1876244940]
 script = ExtResource("11_wnwbv")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="idle_jump_windup" type="Node" parent="movementStateMachine/ground" unique_id=446701420]
+script = ExtResource("12_pf23h")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="run_jump_windup" type="Node" parent="movementStateMachine/ground" unique_id=1394511733]
+script = ExtResource("13_dt7fs")
+metadata/_custom_type_script = "uid://2y37yx57ooc4"
+
+[node name="sprint_jump_windup" type="Node" parent="movementStateMachine/ground" unique_id=197124085]
+script = ExtResource("14_wqfne")
 metadata/_custom_type_script = "uid://2y37yx57ooc4"
 
 [node name="crouch" type="Node" parent="movementStateMachine/ground" unique_id=1406218745]
@@ -146,10 +179,6 @@ metadata/_custom_type_script = "uid://2y37yx57ooc4"
 
 [node name="apex" type="Node" parent="movementStateMachine/air" unique_id=79543236]
 script = ExtResource("23_fdfoy")
-metadata/_custom_type_script = "uid://2y37yx57ooc4"
-
-[node name="jump_windup" type="Node" parent="movementStateMachine/air" unique_id=446701420]
-script = ExtResource("24_hhpqf")
 metadata/_custom_type_script = "uid://2y37yx57ooc4"
 
 [node name="ascend" type="Node" parent="movementStateMachine/air" unique_id=923825165]

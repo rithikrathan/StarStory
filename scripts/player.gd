@@ -21,9 +21,9 @@ const DOUBLE_TAP_WINDOW = 0.3
 
 const MAX_STAMINA = 500
 
-@export var walkAccleration:float = 8.0
-@export var runAccleration:float = 12.0
-@export var sprintAccleration:float = 14.0
+@export var walkAccleration:float = 2.0
+@export var runAccleration:float = 7.0
+@export var sprintAccleration:float = 9.0
 @export var sprintTimeout:float = 34.0
 
 # Stamina is the time remaining => stamina / drainRate = seconds left of sprint.
@@ -40,6 +40,7 @@ var wantsRun: bool = false
 
 var camera_controller: Node3D
 var fsm: FiniteStateMachine
+var jump_charge_time: float = 0.0
 
 # =-=-=-=-=-=-=-= [ TIMERS ] =-=-=-=-=-=-=-=
 var sprintTimer = Timer.new()

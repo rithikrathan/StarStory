@@ -42,7 +42,7 @@ func kill(args: Array) -> void:
 
 var ch_targets = {
 	"@p": {
-		"sprintLength": {"node": "camerAnchor/cameraController/SpringArm3D", "prop": "spring_length"},
+		"springLength": {"node": "camerAnchor/cameraController/SpringArm3D", "prop": "spring_length"},
 		"fov": {"node": "camerAnchor/cameraController/SpringArm3D/Camera3D", "prop": "fov"},
 		"stamina": {"node": ".", "prop": "stamina"},
 	},

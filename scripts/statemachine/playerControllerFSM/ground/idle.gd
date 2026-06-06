@@ -45,3 +45,7 @@ func physics_update(delta: float) -> void:
 
 		player.velocity = player.velocity.lerp(Vector3.ZERO, FRICTION * delta)
 
+	if Input.is_action_just_pressed("jump") and not player.disabled:
+		transition("ground/idle_jump_windup")
+		return
+
