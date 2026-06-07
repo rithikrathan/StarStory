@@ -14,7 +14,9 @@ Do not build entire features or setups unprompted unless explicitly asked.
 
 ## Scope
 
-Working scope is limited to `.gd` files under `scripts/`. Never edit `.tscn`, `.import`, `.uid`, `.godot` files or `project.godot`.
+Writing scope is limited to `.gd` files under `scripts/`. Never edit `.tscn`, `.import`, `.uid`, `.godot` files or `project.godot`.
+Reading is allowed for the full project files to get information, `.scn` files are binary embedded tscn dont waste time reading it
+Writing additional scripts to automate things are also allowed as long as they dont break the project files that are not supposed to be edited manually
 
 ## Project Structure
 
@@ -42,8 +44,8 @@ Working scope is limited to `.gd` files under `scripts/`. Never edit `.tscn`, `.
 
 - `snake_case` for variables and functions
 - `@export var` with type hints for inspector properties
-- `@onready var` for node references; `%UniqueName` shorthand
-- All functions typed with `-> void`
+- `@onready var` for node references; `%UniqueName` shorthand if it is setup in the editor, default is node path 
+- All functions typed with `-> void` or its return type
 - `@warning_ignore("unused_parameter")` on unused params
 - Comment sparingly: `#NOTE:` for important notes, no verbose explanations
 - Debug `print()` calls must have `# [debug]` appended on the same line: `print("velocity: ", velocity) # [debug]`
@@ -58,8 +60,8 @@ Working scope is limited to `.gd` files under `scripts/`. Never edit `.tscn`, `.
   1. If you made code changes, ask the user: "README/docs need updating? Controls, commands, new states?"
   2. Update README.md and any related files if user confirms
   3. Run `git diff --cached` and review every line
-  4. Confirm no `.tscn`, `.import`, `.uid`, or `.godot` files sneak in
-  5. Verify the change actually works
+  4. Confirm no `.tscn`, `.import`, `.uid`, or `.godot` files sneak in, if found prompt user for action
+  5. Verify from the user that the change actually works
 - **Commit format**:
   ```
   <type>: <imperative present tense, lowercase, no period>
