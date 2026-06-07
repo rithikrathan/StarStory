@@ -8,10 +8,12 @@ extends Node
 @onready var crouch = %crouch
 @onready var platforms = %platforms
 @onready var player = %player
-	
-func print_init_messages():
+
+
+func print_init_messages() -> void:
 	cat.print_message(cat.col(Color.GREEN, "Oi!"))
 	cat._proceed_command("/help")
+
 
 func _ready() -> void:
 	cat.register_command("ping", ping, false)
@@ -20,17 +22,22 @@ func _ready() -> void:
 	cat.register_command("ch", ch)
 	print_init_messages()
 
-func print_info(_text:String):
+
+func print_info(_text: String) -> void:
 	pass
 
-func print_err(_text:String):
+
+func print_err(_text: String) -> void:
 	pass
 
-func print_warn(_text:String):
+
+func print_warn(_text: String) -> void:
 	pass
+
 
 func ping() -> void:
 	cat.print_message("Pong!")
+
 
 func kill(args: Array) -> void:
 	cat.print_message("Entity killed")
@@ -40,13 +47,17 @@ func kill(args: Array) -> void:
 		_:
 			cat.print_message("Invalid target, nothing was killed")
 
+
 var ch_targets = {
-	"@p": {
-		"springLength": {"node": "camerAnchor/cameraController/SpringArm3D", "prop": "spring_length"},
+	"@p":
+	{
+		"springLength":
+		{"node": "camerAnchor/cameraController/SpringArm3D", "prop": "spring_length"},
 		"fov": {"node": "camerAnchor/cameraController/SpringArm3D/Camera3D", "prop": "fov"},
 		"stamina": {"node": ".", "prop": "stamina"},
 	},
 }
+
 
 func ch(args: Array) -> void:
 	if args.size() < 3:
@@ -70,37 +81,37 @@ func ch(args: Array) -> void:
 
 func tp(args: Array) -> void:
 	match args[0]:
-		"mainSpawn": 
+		"mainSpawn":
 			cat.print_message("teleporting to: " + args[0] + "....")
 			player.spawnPosition = mainSpawn.position
 			player.position = mainSpawn.position
-		"buildings": 
+		"buildings":
 			cat.print_message("teleporting to: " + args[0] + "....")
 			player.spawnPosition = buildings.position
 			player.position = buildings.position
-		"terrain": 
+		"terrain":
 			cat.print_message("teleporting to: " + args[0] + "....")
 			player.spawnPosition = terrain.position
 			player.position = terrain.position
-		"slope": 
+		"slope":
 			cat.print_message("teleporting to: " + args[0] + "....")
 			player.spawnPosition = slope.position
 			player.position = slope.position
-		"crouch": 
+		"crouch":
 			cat.print_message("teleporting to: " + args[0] + "....")
 			player.spawnPosition = crouch.position
 			player.position = crouch.position
-		"platforms": 
+		"platforms":
 			cat.print_message("teleporting to: " + args[0] + "....")
 			player.spawnPosition = platforms.position
 			player.position = platforms.position
 		"help":
 			cat.print_message("Available spawn points: ")
 			cat.print_message("    1) " + "mainSpawn")
-			cat.print_message("    2) " + "buildings")  
+			cat.print_message("    2) " + "buildings")
 			cat.print_message("    3) " + "terrain")
-			cat.print_message("    4) " + "slope")   
-			cat.print_message("    5) " + "crouch")   
-			cat.print_message("    6) " + "platforms")   
+			cat.print_message("    4) " + "slope")
+			cat.print_message("    5) " + "crouch")
+			cat.print_message("    6) " + "platforms")
 		_:
 			cat.print_message("invalid argument")

@@ -3,8 +3,8 @@
 # Script: run.gd
 # Version: 0.1
 # Author: RITHIK RATHAN C. <github.com/rithikrathan>
-# License: 
-# Repository: 
+# License:
+# Repository:
 # Project: star-story
 # Created: 2026-06-06
 # Description: test descritption bro
@@ -12,28 +12,28 @@
 
 extends State
 
-@export var drainRate:float = 8.0
+@export var drainRate: float = 8.0
 
 var player: CharacterBody3D
 var vModel: Node3D
 # var viewModel: Node3D = _finite_state_machine.get_parent().get_child("viewModel")
 
+
 func enter() -> void:
 	vModel = %"viewModel"
 	player = _finite_state_machine.get_parent() as CharacterBody3D
 	player.velocity.y = 0.0
-	print("State: Run")
+	print("State: Run")  # [debug]
 
-func logic_update(delta: float) -> void:
-		if player.stamina <= player.MAX_STAMINA:
-			player.stamina = move_toward(player.stamina, 0, drainRate * delta)
+
+func update(delta: float) -> void:
+	if player.stamina <= player.MAX_STAMINA:
+		player.stamina = move_toward(player.stamina, 0, drainRate * delta)
+
 
 func physics_update(delta: float) -> void:
 	if _finite_state_machine.current_state != self:
 		return
-
-	if not player:
-		player = _finite_state_machine.get_parent() as CharacterBody3D
 
 	if player.disabled:
 		transition("ground/idle")
@@ -41,7 +41,7 @@ func physics_update(delta: float) -> void:
 	var inputDir = player.get_input_dir()
 	if inputDir.y > 0:
 		var dir = player.get_camera_relative_dir(inputDir)
-		var target = dir *  player.RUN_SPEED
+		var target = dir * player.RUN_SPEED
 		player.velocity = player.velocity.lerp(target, player.runAccleration * delta)
 
 		# rotate view model
