@@ -33,10 +33,12 @@ Writing additional scripts to automate things are also allowed as long as they d
 
 - States `extends State` (class from the addon)
 - Lifecycle methods: `enter()`, `exit()`, `update(delta)`, `physics_update(delta)`
-- Get player (cache in `enter()`): `player = _finite_state_machine.get_parent() as CharacterBody3D`
+- Get player reference:
+  - **Leaf states** (no children): cache in `enter()` → `player = _finite_state_machine.get_parent() as CharacterBody3D`
+  - **Parent states** (has children like `ground/`, `air/`): cache in `physics_update` → `if not player: player = _finite_state_machine.get_parent() as CharacterBody3D`. `enter()` is never called on parent nodes since transitions go to children.
 - Transition: `transition("ground/idle")` — forward-slash node path
 - Previous state: `_finite_state_machine.from_state.id`
-- Guard: `if _finite_state_machine.current_state != self: return` at top of `physics_update`
+- Guard: `if _finite_state_machine.current_state != self: return` at top of `physics_update` — **leaf states only**. Parent states must NOT have this guard (they need to run even when a child is current).
 - Gravity and `move_and_slide()` live in `player.gd` — states never handle them
 - Zero `velocity.y` on ground state enter
 

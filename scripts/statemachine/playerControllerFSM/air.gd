@@ -14,8 +14,8 @@ func update(delta: float) -> void:
 
 @warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
-	if _finite_state_machine.current_state != self:
-		return
+	if not player:
+		player = _finite_state_machine.get_parent() as CharacterBody3D
 
 	if player.is_on_floor():
 		transition("ground/idle")
