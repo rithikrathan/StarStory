@@ -7,16 +7,14 @@ extends Node3D
 @onready var stamina = %infoUI/Stamina
 @onready var staminaLabel = %infoUI/Label
 
-
 func _input(_event: InputEvent) -> void:
 	pass
-
 
 func _ready() -> void:
 	stamina.max_value = player.MAX_STAMINA
 
-
 func _process(_delta: float) -> void:
+
 	stamina.value = player.stamina
 	staminaLabel.text = "Stamina: " + str(int(player.stamina))
 
