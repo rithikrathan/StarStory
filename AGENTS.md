@@ -32,8 +32,8 @@ Writing additional scripts to automate things are also allowed as long as they d
 ## FSM Conventions
 
 - States `extends State` (class from the addon)
-- Lifecycle methods: `enter()`, `exit()`, `update(delta)` (called `logic_update` in this codebase), `physics_update(delta)`
-- Get player: `player = _finite_state_machine.get_parent() as CharacterBody3D`
+- Lifecycle methods: `enter()`, `exit()`, `update(delta)`, `physics_update(delta)`
+- Get player (cache in `enter()`): `player = _finite_state_machine.get_parent() as CharacterBody3D`
 - Transition: `transition("ground/idle")` — forward-slash node path
 - Previous state: `_finite_state_machine.from_state.id`
 - Guard: `if _finite_state_machine.current_state != self: return` at top of `physics_update`
@@ -60,8 +60,8 @@ Writing additional scripts to automate things are also allowed as long as they d
   1. If you made code changes, ask the user: "README/docs need updating? Controls, commands, new states?"
   2. Update README.md and any related files if user confirms
   3. Run `git diff --cached` and review every line
-  4. Confirm no `.tscn`, `.import`, `.uid`, or `.godot` files sneak in, if found prompt user for action
-  5. Verify from the user that the change actually works
+  5. Confirm no `.tscn`, `.import`, `.uid`, or `.godot` files sneak in, if found prompt user for action
+  6. Verify from the user that the change actually works
 - **Commit format**:
   ```
   <type>: <imperative present tense, lowercase, no period>
@@ -75,6 +75,17 @@ Writing additional scripts to automate things are also allowed as long as they d
   - AI: `[llm] fix: fall state not transitioning on landing`
 - **Types**: `add`, `fix`, `change`, `refactor`, `cleanup`, `docs`
 
+## Installation
+
+Tools required for working with this codebase:
+- **gdtoolkit**: `pip install --break-system-packages gdtoolkit` (provides `gdformat`, `gdlint`)
+
+## Tooling
+
+- **Formatter**: `gdformat scripts/` — run after every editing session to normalize style
+- **Linter**: `gdlint scripts/` — check for style violations, unused vars, missing types
+- **Bulk edits**: use sed or a short script for find-and-replace across many files (e.g. `sed -i 's/old/new/g' scripts/**/*.gd`) instead of editing each file individually
+
 ## Workflow
 
 - **Concurrent tool calls** — batch independent reads/searches in one message. Speeds up every session.
@@ -83,5 +94,6 @@ Writing additional scripts to automate things are also allowed as long as they d
 - **Prefer small diffs** — surgical edits over full rewrites unless the whole file needs rework.
 - **Copy+edit for new files** — when creating a new state or script, duplicate the closest existing file and adapt it.
 - **Batch similar edits** — if the same logic change applies across multiple files, do them all in one message.
+- **Run formatter** — run `gdformat scripts/` after making code changes
 - **Escalate unknowns** — if you're unsure about something (which tool to use, which pattern fits, where something lives), ask the user. Don't guess or assume.
 - **Verify with git diff** — after making changes, review the diff before presenting results.

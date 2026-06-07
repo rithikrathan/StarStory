@@ -2,11 +2,13 @@ extends State
 
 
 func enter() -> void:
-	print("State: Ascend")
+	print("State: Ascend")  # [debug]
+
 
 @warning_ignore("unused_parameter")
-func logic_update(delta: float) -> void:
+func update(delta: float) -> void:
 	pass
+
 
 @warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:

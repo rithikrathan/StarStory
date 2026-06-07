@@ -5,18 +5,22 @@ extends State
 var player: CharacterBody3D
 # var vModel: Node3D
 
+
 func enter() -> void:
 	player = _finite_state_machine.get_parent() as CharacterBody3D
 #	vModel = %viewModel
 	player.jump_charge_time = 0.0
-	print("State: JumpWindup")
+	print("State: JumpWindup")  # [debug]
 
-func logic_update(delta: float) -> void:
+
+@warning_ignore("unused_parameter")
+func update(delta: float) -> void:
 	pass
 
+
 func physics_update(delta: float) -> void:
-	if not player:
-		player = _finite_state_machine.get_parent() as CharacterBody3D
+	if _finite_state_machine.current_state != self:
+		return
 
 	if Input.is_action_pressed("jump"):
 		player.jump_charge_time = min(player.jump_charge_time + delta * chargeRate, 10.0)
