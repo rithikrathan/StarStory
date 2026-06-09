@@ -1,4 +1,5 @@
-# INFO: -----------------------------------------------------------------------------
+# INFO: 
+# -----------------------------------------------------------------------------
 # Script: player.gd
 # Version: 0.1
 # Author: RITHIK RATHAN C. <github.com/rithikrathan>
@@ -105,7 +106,6 @@ func _physics_process(delta: float) -> void:
 			if is_on_floor()
 			else gravVel.move_toward(Vector3(0, velocity.y - gravity, 0), gravity * delta)
 		)
-
 	if fsm.current_state:
 		fsm._state_down_call(fsm.current_state.id, "physics_update", delta)
 
